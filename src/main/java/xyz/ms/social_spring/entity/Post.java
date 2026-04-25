@@ -1,6 +1,8 @@
 package xyz.ms.social_spring.entity;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -13,6 +15,8 @@ import java.time.Instant;
 
 @Document(collection = "posts")
 @Data
+@AllArgsConstructor
+@Builder
 public class Post {
 
     @Id

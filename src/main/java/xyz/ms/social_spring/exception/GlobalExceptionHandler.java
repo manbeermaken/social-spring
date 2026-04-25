@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.UNAUTHORIZED,
-                "Authentication failed: " + ex.getMessage()
+                "Invalid username or password."
         );
         problemDetail.setTitle("Unauthorized");
         return problemDetail;

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -38,20 +39,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String accessToken = authHeader.substring(7);
             // 3. Verify token
             Claims claims = authUtil.verifyAccessToken(accessToken);
-            String username = claims.get("username", String.class);
+            String userId = claims.getSubject();
             UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                    = new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            // 4. Catch ExpiredJwtException, SignatureException, etc.
-//            log.error("JWT Authentication failed: {}", e.getMessage());
-//
-//            // Manually build the 401 response since @ControllerAdvice can't reach here
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.setContentType("application/json");
-//            response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Invalid or expired token\"}");
-//            return;
             handlerExceptionResolver.resolveException(request, response, null, e);
         }
     }
