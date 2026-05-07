@@ -16,6 +16,7 @@ org-springframework-boot-spring-boot-starter-validation = "4.0.5"
 org-springframework-boot-spring-boot-starter-webmvc = "4.0.5"
 org-springframework-boot-spring-boot-starter-webmvc-test = "4.0.5"
 org-springframework-security-spring-security-test = "7.0.4"
+org-springframework-modulith-spring-modulith-core = "2.0.6"
 
 [libraries]
 io-jsonwebtoken-jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "io-jsonwebtoken-jjwt-api" }
@@ -32,3 +33,4 @@ org-springframework-boot-spring-boot-starter-validation = { module = "org.spring
 org-springframework-boot-spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc", version.ref = "org-springframework-boot-spring-boot-starter-webmvc" }
 org-springframework-boot-spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test", version.ref = "org-springframework-boot-spring-boot-starter-webmvc-test" }
 org-springframework-security-spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "org-springframework-security-spring-security-test" }
+org-springframework-modulith-spring-modulith-core = { module = "org.springframework.modulith:spring-modulith-core", version.ref = "org-springframework-modulith-spring-modulith-core"}

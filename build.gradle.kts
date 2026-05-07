@@ -37,6 +37,7 @@ dependencies {
 
     testImplementation(libs.org.springframework.boot.spring.boot.starter.webmvc.test)
     testImplementation(libs.org.springframework.security.spring.security.test)
+    testImplementation(libs.org.springframework.modulith.spring.modulith.core)
 }
 
 tasks.withType<JavaCompile>() {

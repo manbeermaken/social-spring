@@ -1,0 +1,40 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: social-spring
+
+  # mongodb
+  mongodb:
+    uri: ${MONGODB_DATABASE_URL:mongodb://localhost:27017/social}
+
+  # postgres
+  datasource:
+    url: ${POSTGRES_DATABASE_URL}
+
+  # hibernate settings
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+  # redis
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379}
+
+
+#logging:
+#  level:
+#    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+# jwt
+jwt:
+  access_token_secret: ${ACCESS_TOKEN_SECRET:access_token_secret}
+  refresh_token_secret: ${REFRESH_TOKEN_SECRET:refresh_token_secret}
