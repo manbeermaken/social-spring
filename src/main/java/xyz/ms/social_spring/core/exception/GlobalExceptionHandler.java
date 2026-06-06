@@ -16,28 +16,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice
 @Slf4j
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException e) {
+    public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.UNPROCESSABLE_CONTENT,
                 "Validation failed for one or more fields."
         );
         problemDetail.setTitle("Unprocessable Entity");
 
-        // 2. Extract the specific field errors from your DTO
         Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        log.warn(errors.toString());
-        // 3. Attach the field errors as an RFC compliant extension member
+        log.debug(errors.toString());
         problemDetail.setProperty("invalid_params", errors);
 
         return problemDetail;
@@ -56,7 +54,7 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-      @ExceptionHandler(UsernameNotFoundException.class)
+    @ExceptionHandler(UsernameNotFoundException.class)
     public ProblemDetail handleUsernameNotFoundException(UsernameNotFoundException ex) {
         log.warn(ex.getMessage());
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(

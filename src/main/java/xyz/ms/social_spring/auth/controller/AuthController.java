@@ -15,11 +15,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/signup")
-    public String signup() {
-        return "get /signup";
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<AuthResponseDto> register(@Valid @RequestBody AuthRequestDto signupRequestDto) {
         AuthResponseDto tokens = authService.signup(signupRequestDto);

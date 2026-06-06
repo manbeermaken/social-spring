@@ -34,9 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         try {
-            // "Bearer token"
             String accessToken = authHeader.substring(7);
-            // 3. Verify token
             Claims claims = authUtil.verifyAccessToken(accessToken);
             String userId = claims.getSubject();
             UsernamePasswordAuthenticationToken authenticationToken
