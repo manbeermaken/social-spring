@@ -56,18 +56,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ProblemDetail handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        log.warn(ex.getMessage());
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND,
                 "Username not found: " + ex.getMessage()
         );
-        problemDetail.setTitle("User Not Found");
+        problemDetail.setTitle("Not Found");
         return problemDetail;
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ProblemDetail handleAuthenticationException(AuthenticationException ex) {
-        log.warn(ex.getMessage());
+        log.info(ex.toString());
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.UNAUTHORIZED,
                 "Invalid username or password."
