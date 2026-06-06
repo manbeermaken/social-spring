@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "xyz.ms"
-version = "0.0.1"
+version = "0.0.2"
 
 java {
     toolchain {
@@ -38,6 +38,12 @@ dependencies {
     testImplementation(libs.org.springframework.boot.spring.boot.starter.webmvc.test)
     testImplementation(libs.org.springframework.security.spring.security.test)
     testImplementation(libs.org.springframework.modulith.spring.modulith.core)
+
+    testImplementation(libs.org.springframework.boot.spring.boot.testcontainers)
+    testImplementation(libs.org.testcontainers.testcontainers)
+    testImplementation(libs.org.testcontainers.testcontainers.junit.jupiter)
+    testImplementation(libs.org.testcontainers.testcontainers.postgresql)
+    testImplementation(libs.org.testcontainers.testcontainers.mongodb)
 }
 
 tasks.withType<JavaCompile>() {

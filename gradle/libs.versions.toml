@@ -17,6 +17,8 @@ org-springframework-boot-spring-boot-starter-webmvc = "4.0.5"
 org-springframework-boot-spring-boot-starter-webmvc-test = "4.0.5"
 org-springframework-security-spring-security-test = "7.0.4"
 org-springframework-modulith-spring-modulith-core = "2.0.6"
+org-springframework-boot-spring-boot-testcontainers = "4.0.5"
+org-testcontainers = "2.0.5"
 
 [libraries]
 io-jsonwebtoken-jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "io-jsonwebtoken-jjwt-api" }
@@ -34,3 +36,8 @@ org-springframework-boot-spring-boot-starter-webmvc = { module = "org.springfram
 org-springframework-boot-spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test", version.ref = "org-springframework-boot-spring-boot-starter-webmvc-test" }
 org-springframework-security-spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "org-springframework-security-spring-security-test" }
 org-springframework-modulith-spring-modulith-core = { module = "org.springframework.modulith:spring-modulith-core", version.ref = "org-springframework-modulith-spring-modulith-core"}
+org-springframework-boot-spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers", version.ref = "org-springframework-boot-spring-boot-testcontainers" }
+org-testcontainers-testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "org-testcontainers" }
+org-testcontainers-testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter", version.ref = "org-testcontainers" }
+org-testcontainers-testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "org-testcontainers" }
+org-testcontainers-testcontainers-mongodb = { module = "org.testcontainers:testcontainers-mongodb", version.ref = "org-testcontainers" }
