@@ -1,13 +1,17 @@
 package xyz.ms.social_spring.posts;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import xyz.ms.social_spring.posts.dto.PostCreateRequestDto;
 import xyz.ms.social_spring.posts.dto.PostResponseDto;
 import xyz.ms.social_spring.posts.dto.PostUpdateRequestDto;
 import xyz.ms.social_spring.posts.entity.Post;
+import xyz.ms.social_spring.posts.exception.PostNotFoundException;
 import xyz.ms.social_spring.users.UserAuthDto;
 import xyz.ms.social_spring.users.UserPostDto;
 import xyz.ms.social_spring.users.UserService;
@@ -18,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
@@ -43,9 +48,6 @@ public class PostService {
 
     public PostResponseDto getUserPosts(String username, int limit, String cursor) {
         UserAuthDto user = userService.findUserByUsername(username);
-        if(user == null) {
-            throw new RuntimeException("User does not exist");
-        }
 
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Limit queryLimit = Limit.of(limit+1);
@@ -64,8 +66,9 @@ public class PostService {
         return new PostResponseDto(posts,nextCursor);
     }
 
-    public Optional<Post> getPost(String id) {
-        return postRepository.findById(id);
+    public Post getPost(String id) {
+        return postRepository.findById(id)
+                    .orElseThrow(()-> new PostNotFoundException("Post with id %s not found".formatted(id)));
     }
 
     public Post createPost(PostCreateRequestDto postCreateRequestDto, String userId) {
@@ -81,12 +84,13 @@ public class PostService {
 
     public Post updatePost(String id, PostUpdateRequestDto postUpdateRequestDto, String userId) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
         UserPostDto userPostDto = userService.findUserById(userId);
 
         if(!post.getAuthorId().equals(userPostDto.userId())) {
-           throw new RuntimeException("You are not allowed to update this post");
+            log.warn("User {} is not allowed to update post {}", userPostDto.userId(), post.getId());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"You are not allowed to update this post.");
         }
 
         post.setContent(postUpdateRequestDto.content());
@@ -95,12 +99,13 @@ public class PostService {
 
     public void deletePost(String id, String  userId) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
         UserPostDto userPostDto = userService.findUserById(userId);
 
         if(!post.getAuthorId().equals(userPostDto.userId())) {
-            throw new RuntimeException("You are not allowed to delete this post");
+            log.warn("User {} is not allowed to delete post {}", userPostDto.userId(), post.getId());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"You are not allowed to delete this post");
         }
         postRepository.delete(post);
     }

@@ -37,11 +37,8 @@ public class PostController {
 
     @GetMapping("{id}")
     public ResponseEntity<Post> post(@PathVariable String id) {
-        Optional<Post> post = postService.getPost(id);
-        if (post.isPresent()) {
-            return new ResponseEntity<>(post.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Post post = postService.getPost(id);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @PostMapping
