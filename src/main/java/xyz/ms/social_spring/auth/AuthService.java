@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.ms.social_spring.auth.dto.*;
+import xyz.ms.social_spring.auth.exception.UsernameAlreadyExistsException;
 import xyz.ms.social_spring.auth.security.AuthUserDetails;
 import xyz.ms.social_spring.users.UserAuthDto;
 import xyz.ms.social_spring.users.UserService;
@@ -30,7 +31,7 @@ public class AuthService {
     public AuthResponseDto signup(AuthRequestDto signupRequestDto) {
         boolean userExists = userService.userExists(signupRequestDto.getUsername());
         if(userExists) {
-            throw new RuntimeException("Username already exists");
+            throw new UsernameAlreadyExistsException("Username already exists");
         }
 
         UserAuthDto newUser = userService.createUser(signupRequestDto.getUsername(), passwordEncoder.encode(signupRequestDto.getPassword()));
@@ -58,9 +59,7 @@ public class AuthService {
     public RefreshResponseDto refresh(RefreshRequestDto refreshRequestDto) {
         String tokenExists = stringRedisTemplate.opsForValue().get(refreshRequestDto.getRefreshToken());
         if(tokenExists == null) {
-            // 403 invalid token
             throw new JwtException("Invalid or Expired token");
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid or expired refresh token");
         }
         Claims claims = authUtil.verifyRefreshToken(refreshRequestDto.getRefreshToken());
         String userId = claims.getSubject();
