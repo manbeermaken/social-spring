@@ -21,4 +21,14 @@ public class PostsExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(UnauthorizedPostAccessException.class)
+    public ProblemDetail handleUnauthorizedPostAccessException(UnauthorizedPostAccessException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.FORBIDDEN,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Forbidden");
+        return problemDetail;
+    }
+
 }
