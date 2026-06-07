@@ -17,22 +17,13 @@ spring:
 
   # hibernate settings
   jpa:
-#    show-sql: true
     hibernate:
       ddl-auto: update
-#    properties:
-#      hibernate:
-#        format_sql: true
 
   # redis
   data:
     redis:
       url: ${REDIS_URL:redis://localhost:6379}
-
-
-#logging:
-#  level:
-#    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 # jwt
 jwt:
