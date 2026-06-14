@@ -2,6 +2,9 @@ package xyz.ms.social_spring.posts;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,6 @@ import xyz.ms.social_spring.users.UserService;
 import xyz.ms.social_spring.posts.repository.PostRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -65,11 +67,13 @@ public class PostService {
         return new PostResponseDto(posts,nextCursor);
     }
 
+    @Cacheable(value = "posts", key = "#id")
     public Post getPost(String id) {
         return postRepository.findById(id)
                     .orElseThrow(()-> new PostNotFoundException("Post with id %s not found".formatted(id)));
     }
 
+    @CachePut(value = "posts", key = "#result.id")
     public Post createPost(PostCreateRequestDto postCreateRequestDto, String userId) {
         UserPostDto userPostDto = userService.findUserById(userId);
 
@@ -81,6 +85,7 @@ public class PostService {
                 .build());
     }
 
+    @CachePut(value = "posts", key = "#id")
     public Post updatePost(String id, PostUpdateRequestDto postUpdateRequestDto, String userId) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post with id %s not found".formatted(id)));
@@ -96,6 +101,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @CacheEvict(value = "posts", key = "#id")
     public void deletePost(String id, String  userId) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post with id %s not found".formatted(id)));
